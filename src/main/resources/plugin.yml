@@ -1,0 +1,6 @@
+name: ParticlePortals
+version: '1.0-SNAPSHOT'
+main: com.pessulum.particleportals.ParticlePortals
+commands:
+  portal:
+    description: generate a portal

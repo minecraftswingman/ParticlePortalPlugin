@@ -1,0 +1,19 @@
+portal:
+  max-portals: 5
+  portal-duration: 10.0 #seconds
+  teleportation-cooldown: 3.0
+  command-cooldown: 7.0
+  has-outline: true
+  rotation: 4 # 0-5 otherwise the default is 4
+  UUID:
+    portal-key:
+      portal-name: null
+      owner: null
+      has-home: false
+      has-destination: false
+      home: null
+      destination: null
+      color: null
+      is-home-free: false
+      shape: cube
+      active: false

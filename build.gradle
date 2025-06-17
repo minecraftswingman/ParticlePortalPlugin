@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+
+}
+
+group = 'com.pessulum'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/')
+    }
+    maven {
+        name = 'sonatype'
+        url = uri('https://oss.sonatype.org/content/groups/public/')
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.14-R0.1-SNAPSHOT'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation("com.github.cryptomorin:XSeries:9.8.0")
+
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    enabled = false
+}
+
+tasks.shadowJar {
+    archiveClassifier.set('')
+    archiveBaseName.set("ParticlePortals")
+    archiveVersion.set("")
+    destinationDirectory.set(file("/Users/imac/Desktop/minecraftStuff/plugins"))
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(sourceSets.main.resources.srcDirs) {
+        include 'plugin.yml'
+    }
+}
+
+tasks {
+    shadowJar {
+        relocate 'com.cryptomorin.xseries', 'my.plugin.utils'
+    }
+}
+
+
