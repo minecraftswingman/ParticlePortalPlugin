@@ -2,7 +2,6 @@ package com.pessulum.particleportals.GeometryUtils;
 
 import com.pessulum.particleportals.ParticlePortals;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -13,10 +12,6 @@ public class PortalMath{
 
     static ParticlePortals plugin;
     static int duration;
-
-
-    static final double particleDistance = 0.1;
-    static final double halfSize = 0.5;
 
     public static final int MAX_PARTICLES = 1000;
     public static final int MAX_LAYERS = 50;
@@ -45,7 +40,7 @@ public class PortalMath{
 
     public PortalMath(ParticlePortals plugin, int duration){
         PortalMath.plugin = plugin;
-        PortalMath.duration = plugin.getConfig().getInt("portal.portal-duration") * 20;
+        PortalMath.duration = duration = plugin.getConfig().getInt("portal.portal-duration") * 20;
 
     }
 
@@ -86,8 +81,8 @@ public class PortalMath{
 
                 double angleY = Math.toRadians(tick * 2);
                 double angleX = Math.toRadians(tick);
-                double sinY = Math.sin(angleY), cosY = Math.cos(angleY);
-                double sinX = Math.sin(angleX), cosX = Math.cos(angleX);
+                double sinY = PortalUtils.sin(angleY), cosY = PortalUtils.cos(angleY);
+                double sinX = PortalUtils.sin(angleX), cosX = PortalUtils.cos(angleX);
 
 
                 int index = 0;
@@ -131,17 +126,17 @@ public class PortalMath{
             counter++;
             baseRotation += Math.toRadians(rotatingAngle);
 
-            double cosRotation = Math.cos(baseRotation);
-            double sinRotation = Math.sin(baseRotation);
+            double cosRotation = PortalUtils.cos(baseRotation);
+            double sinRotation = PortalUtils.sin(baseRotation);
 
             for (int j = 0; j < points; j++) {
                 double angle = Math.toRadians(360.0 / points * j + baseRotation);
-                coordinates[j][0] = Math.cos(angle);
-                coordinates[j][1] = Math.sin(angle);
+                coordinates[j][0] = PortalUtils.cos(angle);
+                coordinates[j][1] = PortalUtils.sin(angle);
 
                 double nextAngle = Math.toRadians(360.0 / points * (j + 1) + baseRotation);
-                nextAngles[j][0] = Math.cos(nextAngle);
-                nextAngles[j][1] = Math.sin(nextAngle);
+                nextAngles[j][0] = PortalUtils.cos(nextAngle);
+                nextAngles[j][1] = PortalUtils.sin(nextAngle);
             }
 
             List<Vector> frame = new ArrayList<>();
@@ -205,17 +200,17 @@ public static void cacheHexagonPortalData(int rotatingAngle) {
         counter++;
         baseRotation += Math.toRadians(rotatingAngle);
 
-        double cosRotation = Math.cos(baseRotation);
-        double sinRotation = Math.sin(baseRotation);
+        double cosRotation = PortalUtils.cos(baseRotation);
+        double sinRotation = PortalUtils.sin(baseRotation);
 
         for (int j = 0; j < points; j++) {
             double angle = Math.toRadians(360.0 / points * j + baseRotation);
-            coordinates[j][0] = Math.cos(angle);
-            coordinates[j][1] = Math.sin(angle);
+            coordinates[j][0] = PortalUtils.cos(angle);
+            coordinates[j][1] = PortalUtils.sin(angle);
 
             double nextAngle = Math.toRadians(360.0 / points * (j + 1) + baseRotation);
-            nextAngles[j][0] = Math.cos(nextAngle);
-            nextAngles[j][1] = Math.sin(nextAngle);
+            nextAngles[j][0] = PortalUtils.cos(nextAngle);
+            nextAngles[j][1] = PortalUtils.sin(nextAngle);
         }
 
         List<Vector> frame = new ArrayList<>();
@@ -278,17 +273,17 @@ public static void cacheHexagonPortalData(int rotatingAngle) {
         counter++;
         baseRotation += Math.toRadians(rotatingAngle);
 
-        double cosRotation = Math.cos(baseRotation);
-        double sinRotation = Math.sin(baseRotation);
+        double cosRotation = PortalUtils.cos(baseRotation);
+        double sinRotation = PortalUtils.sin(baseRotation);
 
         for (int j = 0; j < points; j++) {
             double angle = Math.toRadians(360.0 / points * j + baseRotation);
-            coordinates[j][0] = Math.cos(angle);
-            coordinates[j][1] = Math.sin(angle);
+            coordinates[j][0] = PortalUtils.cos(angle);
+            coordinates[j][1] = PortalUtils.sin(angle);
 
             double nextAngle = Math.toRadians(360.0 / points * (j + 1) + baseRotation);
-            nextAngles[j][0] = Math.cos(nextAngle);
-            nextAngles[j][1] = Math.sin(nextAngle);
+            nextAngles[j][0] = PortalUtils.cos(nextAngle);
+            nextAngles[j][1] = PortalUtils.sin(nextAngle);
         }
 
         List<Vector> frame = new ArrayList<>();
@@ -336,21 +331,19 @@ public static void cacheHexagonPortalData(int rotatingAngle) {
 }
 
 
-public static void cacheTorusPortalData(Location location) {
+public static void cacheTorusPortalData() {
 
-    Location loc = location.clone();
-    List<Location> result = new ArrayList<>();
 
     final double R = 2;
     final double r = 0.5;
     int i = 0;
     int count = 0;
     for (double v = 0; v <= 2 * Math.PI; v += Math.PI / 12) {
-        double v1 = R + r * Math.cos(v);
+        double v1 = R + r * PortalUtils.cos(v);
         for (double u = 0; u <= 2 * Math.PI; u += Math.PI / 12) {
-            double x = v1 * Math.cos(u);
-            double y = v1 * Math.sin(u);
-            double z = r * Math.sin(v);
+            double x = v1 * PortalUtils.cos(u);
+            double y = v1 * PortalUtils.sin(u);
+            double z = r * PortalUtils.sin(v);
             int skipRate = 8;
             if (i % skipRate == 0) {
                 cachedTorusResults.add(new double[]{x, y, z});
@@ -365,8 +358,8 @@ public static void cacheTorusPortalData(Location location) {
     int step = 2;
     for (double rad = 1.1; rad >= 0; rad -= 0.1) {
         for (double angle = 0; angle <= Math.PI * 2; angle += Math.PI / 12) {
-            double x = Math.cos(angle) * rad;
-            double y = Math.sin(angle) * rad;
+            double x = PortalUtils.cos(angle) * rad;
+            double y = PortalUtils.sin(angle) * rad;
             if (circCount2 % step == 0) {
                 cachedCircleResults.add(new double[]{x, y, 0});
             }
@@ -380,16 +373,14 @@ public static void cacheTorusPortalData(Location location) {
 
  public static void cacheSpherePortalData(Location location){
 
-    Location loc = location.clone();
-    List<Location> result = new ArrayList<>();
     int duration = plugin.getConfig().getInt("portal.portal-duration");
 
     for (double i = 0; i <= Math.PI; i += Math.PI / 6) {
-        double radius = Math.sin(i);
-        double y = Math.cos(i);
+        double radius = PortalUtils.sin(i);
+        double y = PortalUtils.cos(i);
         for (double a = 0; a < Math.PI * 2; a += Math.PI / 6) {
-            double x = Math.cos(a) * radius;
-            double z = Math.sin(a) * radius;
+            double x = PortalUtils.cos(a) * radius;
+            double z = PortalUtils.sin(a) * radius;
             cachedSphereBaseLocations.add(new double[]{x, y, z});
         }
     }
@@ -411,8 +402,8 @@ public static void cacheTorusPortalData(Location location) {
     }
 
 private static double[] rotateXYZ(double x, double y, double z, double angle) {
-    double cosA = Math.cos(angle);
-    double sinA = Math.sin(angle);
+    double cosA = PortalUtils.cos(angle);
+    double sinA = PortalUtils.sin(angle);
     double y1 = y * cosA - z * sinA;
     double z1 = y * sinA + z * cosA;
     double x2 = x * cosA + z1 * sinA;

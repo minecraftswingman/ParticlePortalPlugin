@@ -8,6 +8,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
+
+import static com.pessulum.particleportals.PortalSpawner.CustomPortals.CUBE;
+
 public class Portal {
     public static HashMap<UUID, Double> cooldowns = new HashMap<>();
     public static HashMap<UUID, Boolean> portalRunMap = new HashMap<>();
@@ -55,6 +58,10 @@ public class Portal {
         String shapeName = plugin.getConfig().getString("portal." + player.getUniqueId() + "." + Identifier + ".shape");
         int rotatingAngle = plugin.getConfig().getInt("portal.rotation");
         CustomPortals portalShape = CustomPortals.fromShapeName(shapeName);
+        if (portalShape == null) {
+            portalShape = CUBE;
+        }
+
         Location clonedLoc = startingLoc.clone();
             switch (portalShape) {
                 case CUBE:
