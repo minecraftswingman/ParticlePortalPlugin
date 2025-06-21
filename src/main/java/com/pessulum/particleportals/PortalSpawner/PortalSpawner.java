@@ -20,7 +20,7 @@ import java.util.List;
 public class PortalSpawner {
 
     final static Particle.DustOptions mainDust = new Particle.DustOptions(Color.PURPLE, 1.0F);
-    ;
+
     private static ParticlePortals plugin;
     PortalSpawner(ParticlePortals plugin)  {
         PortalSpawner.plugin = plugin;
@@ -254,7 +254,7 @@ protected static void spawnTorusPortal(Player player, String Identifier,Location
     Particle.DustOptions dustOptions2 = new Particle.DustOptions(Color.PURPLE, 4.8F);
     PortalMath portalMath = new PortalMath(plugin, plugin.getConfig().getInt("portal.portal-duration"));
 
-    if (portalMath.cachedTorusResults.isEmpty()) portalMath.cacheTorusPortalData(location);
+    if (portalMath.cachedTorusResults.isEmpty()) portalMath.cacheTorusPortalData();
 
     new BukkitRunnable() {
         private int counter = 0;
